@@ -6,14 +6,14 @@ PSQL="psql --username=freecodecamp --dbname=number_guess -t --no-align -q -c"
 echo "Enter your username:"
 read USERNAME
 
-EXISTING_USER=$($PSQL "SELECT username FROM users WHERE username='$USERNAME';")
+EXISTING_USER=$($PSQL "SELECT user_id FROM users WHERE username='$USERNAME';")
 
 if [[ -z $EXISTING_USER ]] 
 then
   echo "Welcome, $USERNAME! It looks like this is your first time here."
   $PSQL "INSERT INTO users (username) VALUES ('$USERNAME');"
 else 
-  USER_ID=$($PSQL "SELECT user_id FROM users WHERE username='$USERNAME';")
+  USER_ID=$EXISTING_USER
   GAMES_PLAYED=$($PSQL "SELECT COUNT(*) FROM won_user_games WHERE user_id='$USER_ID';")
   BEST_GAME=$($PSQL "SELECT MIN(guess_count) FROM won_user_games WHERE user_id='$USER_ID';")
   
