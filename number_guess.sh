@@ -14,9 +14,8 @@ then
   $PSQL "INSERT INTO users (username) VALUES ('$USERNAME');"
 else 
   USER_ID=$EXISTING_USER
-  GAMES_PLAYED=$($PSQL "SELECT COUNT(*) FROM won_user_games WHERE user_id='$USER_ID';")
-  BEST_GAME=$($PSQL "SELECT MIN(guess_count) FROM won_user_games WHERE user_id='$USER_ID';")
-  
+  GAMES_PLAYED=$($PSQL "SELECT COUNT(*) FROM won_user_games WHERE user_id=$USER_ID;")
+  BEST_GAME=$($PSQL "SELECT MIN(guess_count) FROM won_user_games WHERE user_id=$USER_ID;")
   echo "Welcome back, $USERNAME! You have played $GAMES_PLAYED games, and your best game took $BEST_GAME guesses."
 fi
 
@@ -28,7 +27,7 @@ do
   echo "Guess the secret number between 1 and 1000:"
   read NUMBER_GUESSED
 
-if [[ ! $NUMBER_GUESSED =~ ^[0-9]+$ ]];
+if [[ ! $NUMBER_GUESSED =~ ^[0-9]+$ ]]
 then
   echo "That is not an integer, guess again:"
   continue
